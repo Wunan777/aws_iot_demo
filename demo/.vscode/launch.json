@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debug",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/pub.py",
+            "args": [
+                "--endpoint",
+                "a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com",
+                "--cert",
+                "/home/nanwu/software/iot-core-demo/demo/certs/dd01.pem.crt",
+                "--key",
+                "/home/nanwu/software/iot-core-demo/demo/certs/dd01.pem.key",
+                "--ca_file",
+                "/home/nanwu/software/iot-core-demo/demo/certs/AmazonRootCA1.pem"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal",
+            "stopOnEntry": false
+        }
+    ]
+}
