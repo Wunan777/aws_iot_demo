@@ -2,3 +2,9 @@
 /certs
 utils/__pycache__/command_line_utils.cpython-39.pyc
 src/__pycache__/callback_handler.cpython-39.pyc
+.DS_Store
+.DS_Store
+.DS_Store
+/light01_cert
+.DS_Store
+*.pyc

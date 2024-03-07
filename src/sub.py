@@ -4,7 +4,15 @@ from uuid import uuid4
 
 import time
 import argparse
-from src.callback_handler import on_connection_interrupted, on_connection_resumed, on_connection_success, on_connection_failure, on_connection_closed, on_message_received
+from callback_handler import (
+    on_connection_interrupted,
+    on_connection_resumed,
+    on_connection_success,
+    on_connection_failure,
+    on_connection_closed,
+    on_message_received,
+)
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="描述您的程序")
@@ -15,8 +23,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
     args = parse_arguments()
@@ -26,7 +33,7 @@ if __name__ == '__main__':
     ca_file = args.ca_file
     topic = "test/topic/user001"
     # Connection port. AWS IoT supports 443 and 8883 (optional, default=8883)
-    port = 8883 
+    port = 8883
     client_id = "test-user001-" + str(uuid4())
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -45,7 +52,8 @@ if __name__ == '__main__':
         http_proxy_options=proxy_options,
         on_connection_success=on_connection_success,
         on_connection_failure=on_connection_failure,
-        on_connection_closed=on_connection_closed)
+        on_connection_closed=on_connection_closed,
+    )
 
     # Connect.
     print("Connecting to {} with client ID '{}'...".format(endpoint, client_id))
@@ -57,12 +65,11 @@ if __name__ == '__main__':
     # Subscribe
     print("Subscribing to topic '{}'...".format(topic))
     subscribe_future, packet_id = mqtt_connection.subscribe(
-        topic=topic,
-        qos=mqtt.QoS.AT_LEAST_ONCE,
-        callback=on_message_received)
+        topic=topic, qos=mqtt.QoS.AT_LEAST_ONCE, callback=on_message_received
+    )
 
     subscribe_result = subscribe_future.result()
-    print("Subscribed with {}".format(str(subscribe_result['qos'])))
+    print("Subscribed with {}".format(str(subscribe_result["qos"])))
 
     time.sleep(10 * 86400)
     # Disconnect

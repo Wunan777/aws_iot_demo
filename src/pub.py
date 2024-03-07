@@ -4,8 +4,16 @@ from uuid import uuid4
 
 import time
 import json
-from src.callback_handler import on_connection_interrupted, on_connection_resumed, on_connection_success, on_connection_failure, on_connection_closed
+from callback_handler import (
+    on_connection_interrupted,
+    on_connection_resumed,
+    on_connection_success,
+    on_connection_failure,
+    on_connection_closed,
+)
 import argparse
+
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description="描述您的程序")
     parser.add_argument("--endpoint", help="指定终端点地址")
@@ -15,7 +23,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Create the proxy options if the data is present in cmdData
     proxy_options = None
 
@@ -26,7 +34,7 @@ if __name__ == '__main__':
     ca_file = args.ca_file
     topic = "test/topic/user001"
     # Connection port. AWS IoT supports 443 and 8883 (optional, default=8883)
-    port = 8883 
+    port = 8883
     client_id = "test-user002-" + str(uuid4())
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
@@ -45,7 +53,8 @@ if __name__ == '__main__':
         http_proxy_options=proxy_options,
         on_connection_success=on_connection_success,
         on_connection_failure=on_connection_failure,
-        on_connection_closed=on_connection_closed)
+        on_connection_closed=on_connection_closed,
+    )
 
     # Connect.
     print("Connecting to {} with client ID '{}'...".format(endpoint, client_id))
@@ -57,20 +66,19 @@ if __name__ == '__main__':
     message_json = json.dumps(message)
 
     # The function publish is no-blocking, and the return detail as below.
-    # Returns: 
-    # Tuple[concurrent.futures.Future, int]: 
-    #   Tuple containing a Future and the ID of the PUBLISH packet. 
+    # Returns:
+    # Tuple[concurrent.futures.Future, int]:
+    #   Tuple containing a Future and the ID of the PUBLISH packet.
     # ---
     # The QoS determines when the Future completes:
     # For QoS 0, completes as soon as the packet is sent.
     # For QoS 1, completes when PUBACK is received.
     # For QoS 2, completes when PUBCOMP is received.
     pub_res = mqtt_connection.publish(
-        topic=topic,
-        payload=message_json,
-        qos=mqtt.QoS.AT_LEAST_ONCE)
-    # Here for the QoS 1, 
-    # When just after publishing, pub_res state is 'pending' 
+        topic=topic, payload=message_json, qos=mqtt.QoS.AT_LEAST_ONCE
+    )
+    # Here for the QoS 1,
+    # When just after publishing, pub_res state is 'pending'
     print(pub_res)
     # Or you can use `pub_res[0].result()`, which will block here until the PUBACK is received.
     time.sleep(5)
