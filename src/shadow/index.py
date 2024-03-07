@@ -125,7 +125,3 @@ class Shadow(iotshadow.IotShadowClient):
 
         future = self.publish_update_shadow(request, mqtt.QoS.AT_LEAST_ONCE)
         future.result()
-
-    def report(self, reported=None):
-        if reported is None:
-            raise Exception("report error: repor")
