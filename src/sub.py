@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import time
 import argparse
-from callback_handler import (
+from utilities.conn_callback_handler import (
     on_connection_interrupted,
     on_connection_resumed,
     on_connection_success,
