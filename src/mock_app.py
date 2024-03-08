@@ -1,9 +1,16 @@
+import argparse
+import logging
 from awsiot import iotshadow, mqtt_connection_builder
 from awscrt import mqtt, http
 from uuid import uuid4
-import argparse
 from utilities.tool import get_client_id
 from shadow.index import Shadow
+
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
+
+
+def on_update_shadow_accepted(response):
+    pass
 
 
 def parse_arguments():
@@ -43,7 +50,15 @@ if __name__ == "__main__":
 
     connected_future = mqtt_connection.connect()
     # shadow_client = iotshadow.IotShadowClient(mqtt_connection)
-    shadow_client = Shadow(mqtt_connection, shadow_thing_name)
+    shadow_client = Shadow(
+        mqtt_connection,
+        shadow_thing_name,
+        on_update_shadow_accepted=on_update_shadow_accepted,
+        on_update_shadow_rejected=None,
+        on_get_shadow_accepted=None,
+        on_get_shadow_rejected=None,
+        on_shadow_delta_updated=None,
+    )
 
     connected_future.result()
     print("Connected!")

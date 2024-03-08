@@ -125,3 +125,19 @@ class Shadow(iotshadow.IotShadowClient):
 
         future = self.publish_update_shadow(request, mqtt.QoS.AT_LEAST_ONCE)
         future.result()
+
+    def query_remote_shadow(self):
+        try:
+            # The response will be received by the on_get_accepted() callback
+            print("Requesting current shadow state...")
+            token = str(uuid4())
+            publish_get_future = self.publish_get_shadow(
+                request=iotshadow.GetShadowRequest(
+                    thing_name=self.shadow_thing_name, client_token=token
+                ),
+                qos=mqtt.QoS.AT_LEAST_ONCE,
+            )
+            publish_get_future.result()
+
+        except Exception as e:
+            exit(e)

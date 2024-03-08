@@ -8,3 +8,4 @@ src/__pycache__/callback_handler.cpython-39.pyc
 /light01_cert
 .DS_Store
 *.pyc
+*.log

@@ -6,34 +6,36 @@ import argparse
 from utilities.tool import get_client_id
 from shadow.index import Shadow
 from model.vehicle import Vehicle
+import logging
 
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
 
-vehicle = Vehicle()
+vehicle = Vehicle(model="tesla-model-s", color="white")
 
 
 def on_shadow_delta_updated(delta):
-    pass
+    # 如果某个属性位于 reported 部分，但在 desired 部分没有等效值，则不会包含在内。
+    # 如果某个属性位于 desired 部分，但在 reported 部分没有等效值，则将包含在内。
+    # 如果某个属性已从 reported 部分删除，但仍存在于 desired 部分，则将包含在内。
+    logging.debug("on_shadow_delta_updated recv: {}".format(delta))
+    desired_door_status = delta.state["door-status"]
+    vehicle.manage_door_status(desired_door_status)
 
 
 def on_update_shadow_accepted(response):
-
-    # response.state.reported[shadow_property]
+    logging.debug("on_update_shadow_accepted recv:{}".format(response))
     desired = response.state.desired
-
     desired_door_status = desired["door-status"]
-    actual_door_status = vehicle.door_status
-    # When desired_status != actual_status,
-    #   trigger `mange_door` event.
-    if desired_door_status != actual_door_status:
-        vehicle.manage_door_status(desired_door_status)
-        vehicle.report()
-    else:
-        # No event trigger, No need to do.
-        pass
+    vehicle.manage_door_status(desired_door_status)
 
 
-def on_get_shadow_accepted():
-    pass
+def on_get_shadow_accepted(response):
+    logging.debug("on_get_shadow_accepted recv: {}".format(response))
+    if response.state:
+        if response.state.desired:
+            desired = response.state.desired
+            desired_door_status = desired["door-status"]
+            vehicle.manage_door_status(desired_door_status)
 
 
 def parse_arguments():
@@ -76,23 +78,20 @@ if __name__ == "__main__":
     print("Connected!")
 
     # Initilize shadow.
-    shadow_client = Shadow(mqtt_connection, shadow_thing_name)
+    shadow_client = Shadow(
+        mqtt_connection,
+        shadow_thing_name,
+        on_update_shadow_accepted=on_get_shadow_accepted,
+        on_update_shadow_rejected=None,
+        on_get_shadow_accepted=on_update_shadow_accepted,
+        on_get_shadow_rejected=None,
+        on_shadow_delta_updated=on_shadow_delta_updated,
+    )
     vehicle.conect_shadow(shadow_client)
 
-    try:
-        # The response will be received by the on_get_accepted() callback
-        print("Requesting current shadow state...")
-        token = str(uuid4())
-        publish_get_future = shadow_client.publish_get_shadow(
-            request=iotshadow.GetShadowRequest(
-                thing_name=shadow_thing_name, client_token=token
-            ),
-            qos=mqtt.QoS.AT_LEAST_ONCE,
-        )
-        publish_get_future.result()
+    shadow_client.query_remote_shadow()
 
-    except Exception as e:
-        exit(e)
-
+    # Mock Vehicle online, loop report to the remote.
     while True:
-        time.sleep(86400)
+        vehicle.report()
+        time.sleep(1)
