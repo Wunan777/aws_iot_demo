@@ -157,7 +157,20 @@ unlocekd_car_image = (
 print(unlocekd_car_image)
 
 
-a = (
+def pad_string(input_string):
+    padded_string = input_string.ljust(38)
+    return padded_string
+
+
+# Example usage:
+input_string = "example"
+padded_string = pad_string(input_string)
+print(padded_string)
+
+
+header_info = pad_string("Monitor Website.")
+vehicle_info = pad_string("{} {}: {}".format("tesla-s", "door-status", "locked"))
+webview_image = (
     "                 _________________________________________                                "
     + "\n"
     + '               ."  _____________________________________  ".                              '
@@ -166,13 +179,15 @@ a = (
     + "\n"
     + '              "| |                                       | |                              '
     + "\n"
-    + '              "| |  {                                    | |                              '
+    + '              "| |                                       | |                              '
     + "\n"
-    + '              "| |    cout << "Vopec_" << endl;          | |                              '
+    + '              "| | {}| |                              '.format(header_info)
     + "\n"
-    + '              "| |    return 0;                          | |                              '
+    + '              "| |  ------------------------------------ | |                              '
     + "\n"
-    + '              "| |  }                                    | |                              '
+    + '              "| | {}| |                              '.format(vehicle_info)
+    + "\n"
+    + '              "| |                                       | |                              '
     + "\n"
     + '              "| |                                       | |                              '
     + "\n"
@@ -206,5 +221,4 @@ a = (
     + "\n"
 )
 
-print("{}".format(1))
-print(a)
+print(webview_image)

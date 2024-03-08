@@ -5,7 +5,7 @@
             "name": "Python Debug",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/src/device.py",
+            "program": "${workspaceFolder}/src/mock_web.py",
             "args": [
                 "--endpoint",
                 "a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com",
@@ -15,7 +15,7 @@
                 "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01-private.pem.key",
                 "--ca_file",
                 "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/AmazonRootCA1.pem",
-                "--shadow_thing_name",
+                "--thing_name",
                 "light01"
             ],
             "cwd": "${workspaceFolder}",

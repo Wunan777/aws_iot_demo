@@ -4,28 +4,7 @@ from awsiot import iotshadow, mqtt_connection_builder
 from awscrt import mqtt
 
 
-locekd_car_image = (
-    "                     _..-------++._                      \n"
-    + "                 _.-'/ |      _||  \"--._              \n"
-    + "           __.--'`._/_\j_____/_||___\    `----.        \n"
-    + "      _.--'_____    |    locked        _____  /        \n"
-    + "    _j    /,---.\   |        =o |   /,---.\   |_       \n"
-    + "   [__]==// .-. \\==`===========/==// .-. \\=[__]      \n"
-    + "     `-._|\ `-' /|___\_________/___|\ `-' /|_.'        \n"
-    + "           `---'                     `---'             \n"
-)
-
-
-unlocekd_car_image = (
-    "                     _..-------++._                      \n"
-    + "                 _.-'/ |      _||  \"--._              \n"
-    + "           __.--'`._/_\j_____/_||___\    `----.        \n"
-    + "      _.--'_____    | unlocked|   _____       /        \n"
-    + "    _j    /,---.\   |         o |   /,---.\   |_       \n"
-    + "   [__]==// .-. \\==`===========/==// .-. \\=[__]      \n"
-    + "     `-._|\ `-' /|___\_________/___|\ `-' /|_.'        \n"
-    + "           `---'                     `---'             \n"
-)
+from utilities.view import Render
 
 
 def on_publish_update_shadow(future):
@@ -54,11 +33,13 @@ class Vehicle:
         self,
     ):
         self.door_status = "locked"
-        logging.info("\n" + locekd_car_image)
+        locked_car_image = Render.get_vehicle_view_locked()
+        logging.info("\n" + locked_car_image)
 
     def unlock_door(self):
         self.door_status = "unlocked"
-        logging.info("\n" + unlocekd_car_image)
+        unlocked_car_image = Render.get_vehicle_view_locked()
+        logging.info("\n" + unlocked_car_image)
 
     def manage_door_status(self, desired_door_status):
         if self.door_status == desired_door_status:
