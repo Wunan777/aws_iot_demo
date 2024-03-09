@@ -38,7 +38,7 @@ class Vehicle:
 
     def unlock_door(self):
         self.door_status = "unlocked"
-        unlocked_car_image = Render.get_vehicle_view_locked()
+        unlocked_car_image = Render.get_vehicle_view_unlocked()
         logging.info("\n" + unlocked_car_image)
 
     def manage_door_status(self, desired_door_status):

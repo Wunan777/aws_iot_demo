@@ -7,14 +7,16 @@ import logging
 import os
 from utilities.view import Render
 
+logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
+
 
 def render_website_view(response):
     try:
         reported = response.state.reported
         door_status = reported["door-status"]
-        website_view = Render.get_monitor_website_view("", "", door_status)
-        # os.system("clear")
-        logging.info(website_view)
+        website_view = Render.get_monitor_website_view("", "tesla-model-s", door_status)
+        os.system("clear")
+        logging.info("\n" + website_view)
     except Exception as err:
         print(err)
 
@@ -28,18 +30,10 @@ def on_shadow_delta_updated(delta):
 
 
 def on_update_shadow_accepted(response):
-    # logging.debug("on_update_shadow_accepted recv:{}".format(response))
-    # desired = response.state.desired
-    # desired_door_status = desired["door-status"]
-    # vehicle.manage_door_status(desired_door_status)
-    print(123)
-    print(223)
-    print(response)
-
     # awsiot.iotshadow.UpdateShadowResponse(
-    #     client_token="87d771d9-70bb-4cee-ad4c-c3b93abbc3d3",
+    #     client_token="76ac68f3-ee3f-46c7-9930-f888027e6908",
     #     metadata=awsiot.iotshadow.ShadowMetadata(
-    #         desired=None, reported={"door-status": {"timestamp": 1709918914}}
+    #         desired=None, reported={"door-status": {"timestamp": 1709957236}}
     #     ),
     #     state=awsiot.iotshadow.ShadowState(
     #         desired=None,
@@ -47,25 +41,32 @@ def on_update_shadow_accepted(response):
     #         reported={"door-status": "unlocked"},
     #         reported_is_nullable=False,
     #     ),
-    #     timestamp=datetime.datetime(2024, 3, 9, 1, 28, 34),
-    #     version=21237,
+    #     timestamp=datetime.datetime(2024, 3, 9, 12, 7, 16),
+    #     version=59508,
     # )
-    print(response.state)
-    print(response.state.reported)
-    try:
-        reported = response.state.reported
-        door_status = reported.get("door-status")
-        print(door_status)
-        website_view = Render.get_monitor_website_view("", "", door_status)
-        print(website_view)
-        # os.system("clear")
-        logging.info(website_view)
-        render_website_view(response)
-    except Exception as err:
-        print(err)
+    logging.debug("on_update_shadow_accepted response : {}".format(response))
+    render_website_view(response)
 
 
 def on_get_shadow_accepted(response):
+    # awsiot.iotshadow.GetShadowResponse(
+    #     client_token="72a29568-ecf0-43c1-afe4-1b90724c7391",
+    #     metadata=awsiot.iotshadow.ShadowMetadata(
+    #         desired={"door-status": {"timestamp": 1709918359}},
+    #         reported={
+    #             "door-status": {"timestamp": 1709957235},
+    #             "color": {"timestamp": 1709918359},
+    #         },
+    #     ),
+    #     state=awsiot.iotshadow.ShadowStateWithDelta(
+    #         delta=None,
+    #         desired={"door-status": "unlocked"},
+    #         reported={"door-status": "unlocked", "color": "red1"},
+    #     ),
+    #     timestamp=datetime.datetime(2024, 3, 9, 12, 7, 15),
+    #     version=59507,
+    # )
+    logging.debug("on_get_shadow_accepted response : {}".format(response))
     render_website_view(response)
 
 
@@ -115,7 +116,7 @@ if __name__ == "__main__":
         thing_name,
         on_update_shadow_accepted=on_update_shadow_accepted,
         on_update_shadow_rejected=None,
-        on_get_shadow_accepted=None,
+        on_get_shadow_accepted=on_get_shadow_accepted,
         on_get_shadow_rejected=None,
         on_shadow_delta_updated=None,
     )
@@ -126,4 +127,4 @@ if __name__ == "__main__":
     shadow_client.query_remote_shadow()
 
     while True:
-        time.sleep(1)
+        time.sleep(86400 * 1)
