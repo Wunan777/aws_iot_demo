@@ -9,3 +9,4 @@ src/__pycache__/callback_handler.cpython-39.pyc
 .DS_Store
 *.pyc
 *.log
+/temp

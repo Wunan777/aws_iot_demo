@@ -12,13 +12,6 @@ def exit(msg_or_exception):
     else:
         print("Exiting sample:", msg_or_exception)
 
-    # with locked_data.lock:
-    #     if not locked_data.disconnect_called:
-    #         print("Disconnecting...")
-    #         locked_data.disconnect_called = True
-    #         future = mqtt_connection.disconnect()
-    #         future.add_done_callback(on_disconnected)
-
 
 def on_disconnected(disconnect_future):
     # type: (Future) -> None

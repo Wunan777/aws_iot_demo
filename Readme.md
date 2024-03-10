@@ -40,24 +40,3 @@ python3 src/mock_app.py --endpoint ${endpoint} --cert ${cert_path} --key ${key_p
 ```
 python3 src/mock_app.py --endpoint ${endpoint} --cert ${cert_path} --key ${key_path} --ca_file ${ca_file_path} --thing_name=${vehicle_id}
 ```
-
-"--endpoint",
-"a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com",
-"--cert",
-"/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01.pem.crt",
-"--key",
-"/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01-private.pem.key",
-"--ca_file",
-"/Users/nanwu/certs/AmazonRootCA1.pem",
-"--thing_name",
-"light01",
-"--shadow_property",
-"color"
-python3 src/mock_web.py --endpoint "a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com" --cert "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01.pem.crt" --key "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01-private.pem.key" --ca_file "/Users/nanwu/certs/AmazonRootCA1.pem" --thing_name="light01"
-
-'$aws/things/${param}/shadow/get'
-
-自定义
-$aws/things/light01/shadow/name/light01_shadow
-经典
-$aws/things/light01/shadow

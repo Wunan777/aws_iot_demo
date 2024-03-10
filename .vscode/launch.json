@@ -8,15 +8,15 @@
             "program": "${workspaceFolder}/src/mock_web.py",
             "args": [
                 "--endpoint",
-                "a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com",
+                "${endpoint_url}",
                 "--cert",
-                "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01.pem.crt",
+                "${workspaceFolder}/cert/${thing_name}.pem.crt",
                 "--key",
-                "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01-private.pem.key",
+                "${workspaceFolder}/cert/${thing_name}-private.pem.key",
                 "--ca_file",
-                "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/AmazonRootCA1.pem",
+                "${workspaceFolder}/cert/AmazonRootCA1.pem",
                 "--thing_name",
-                "light01"
+                "${thing_name}"
             ],
             "cwd": "${workspaceFolder}",
             "env": {},
@@ -27,8 +27,3 @@
     ]
 }
 
-// python3 src/device.py --endpoint "a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com" --cert "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01.pem.crt" --key "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01-private.pem.key" --shadow_thing_name "light01_shadow"
-
-// python3 src/mock_vehicle.py --endpoint "a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com" --cert "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01.pem.crt" --key "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01-private.pem.key" --thing_name "light01"
-
-// python3 src/mock_app.py --endpoint "a2ht2a7mp6bug7-ats.iot.us-east-1.amazonaws.com" --cert "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01.pem.crt" --key "/Users/nanwu/Documents/GitHub/aws_iot_demo/light01_cert/light01-private.pem.key" --thing_name "light01"
