@@ -31,10 +31,10 @@ if __name__ == "__main__":
     cert = args.cert
     key = args.key
     ca_file = args.ca_file
-    topic = "test/topic/user001"
+    topic = "test/topic1"
     # Connection port. AWS IoT supports 443 and 8883 (optional, default=8883)
     port = 8883
-    client_id = "test-user001-" + str(uuid4())
+    client_id = "subscriber-" + str(uuid4())
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
         endpoint=endpoint,

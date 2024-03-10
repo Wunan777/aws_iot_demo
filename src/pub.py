@@ -32,10 +32,10 @@ if __name__ == "__main__":
     cert = args.cert
     key = args.key
     ca_file = args.ca_file
-    topic = "test/topic/user001"
+    topic = "test/topic1"
     # Connection port. AWS IoT supports 443 and 8883 (optional, default=8883)
     port = 8883
-    client_id = "test-user002-" + str(uuid4())
+    client_id = "publisher-" + str(uuid4())
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
         endpoint=endpoint,
@@ -59,12 +59,7 @@ if __name__ == "__main__":
     # Connect.
     print("Connecting to {} with client ID '{}'...".format(endpoint, client_id))
     connect_future = mqtt_connection.connect()
-
-    # Publish.
-    message = "Hi, this is the great message from {}".format(client_id)
-    print("Publishing message to topic '{}': {}".format(topic, message))
-    message_json = json.dumps(message)
-
+    connect_future.result()
     # The function publish is no-blocking, and the return detail as below.
     # Returns:
     # Tuple[concurrent.futures.Future, int]:
@@ -74,16 +69,25 @@ if __name__ == "__main__":
     # For QoS 0, completes as soon as the packet is sent.
     # For QoS 1, completes when PUBACK is received.
     # For QoS 2, completes when PUBCOMP is received.
-    pub_res = mqtt_connection.publish(
-        topic=topic, payload=message_json, qos=mqtt.QoS.AT_LEAST_ONCE
-    )
-    # Here for the QoS 1,
-    # When just after publishing, pub_res state is 'pending'
-    print(pub_res)
-    # Or you can use `pub_res[0].result()`, which will block here until the PUBACK is received.
-    time.sleep(5)
-    # When PUBACK is received, pub_res state is 'finished'
-    print(pub_res)
+    while True:
+        print("Please input the message: ")
+        user_input = input()
+        print("Your input: {}".format(user_input))
+
+        # Publish.
+        message_json = json.dumps(user_input)
+
+        pub_res = mqtt_connection.publish(
+            topic=topic, payload=message_json, qos=mqtt.QoS.AT_LEAST_ONCE
+        )
+
+        # Here for the QoS 1,
+        # When just after publishing, pub_res state is 'pending'
+        # print(pub_res)
+        # Or you can use `pub_res[0].result()`, which will block here until the PUBACK is received.
+        # time.sleep(10)
+        # When PUBACK is received, pub_res state is 'finished'
+        # print(pub_res)
 
     # Disconnect.
     print("Disconnecting...")
