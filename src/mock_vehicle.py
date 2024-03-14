@@ -18,15 +18,22 @@ def on_shadow_delta_updated(delta):
     # 如果某个属性位于 desired 部分，但在 reported 部分没有等效值，则将包含在内。
     # 如果某个属性已从 reported 部分删除，但仍存在于 desired 部分，则将包含在内。
     logging.debug("on_shadow_delta_updated recv: {}".format(delta))
-    desired_door_status = delta.state["door-status"]
-    vehicle.manage_door_status(desired_door_status)
+
+    if delta.state and delta.state["door-status"]:
+        desired_door_status = delta.state["door-status"]
+        vehicle.manage_door_status(desired_door_status)
 
 
 def on_update_shadow_accepted(response):
     logging.debug("on_update_shadow_accepted recv:{}".format(response))
-    desired = response.state.desired
-    desired_door_status = desired["door-status"]
-    vehicle.manage_door_status(desired_door_status)
+
+    if response.state.desired:
+        desired = response.state.desired
+
+        # Manage Door Status
+        if desired["door-status"]:
+            desired_door_status = desired["door-status"]
+            vehicle.manage_door_status(desired_door_status)
 
 
 def on_get_shadow_accepted(response):

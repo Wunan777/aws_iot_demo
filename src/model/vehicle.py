@@ -28,6 +28,8 @@ class Vehicle:
         self.location = "0.0,0.0"
 
         self.shadow = None
+        unlocked_car_image = Render.get_vehicle_view_unlocked()
+        logging.info("\n" + unlocked_car_image)
 
     def lock_door(
         self,

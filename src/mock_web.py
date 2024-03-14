@@ -10,11 +10,26 @@ from utilities.view import Render
 logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
 
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="描述您的程序")
+    parser.add_argument("--endpoint", help="指定终端点地址")
+    parser.add_argument("--cert", help="指定证书路径")
+    parser.add_argument("--key", help="指定密钥路径")
+    parser.add_argument("--ca_file", help="指定 CA 文件路径")
+    parser.add_argument("--thing_name", help="设备名称")
+    return parser.parse_args()
+
+
+args = parse_arguments()
+
+
 def render_website_view(response):
     try:
         reported = response.state.reported
-        door_status = reported["door-status"]
-        website_view = Render.get_monitor_website_view("", "tesla-model-s", door_status)
+        door_status = "-"
+        if reported and reported["door-status"]:
+            door_status = reported["door-status"]
+        website_view = Render.get_monitor_website_view(args.thing_name, "", door_status)
         os.system("clear")
         logging.info("\n" + website_view)
     except Exception as err:
@@ -70,18 +85,8 @@ def on_get_shadow_accepted(response):
     render_website_view(response)
 
 
-def parse_arguments():
-    parser = argparse.ArgumentParser(description="描述您的程序")
-    parser.add_argument("--endpoint", help="指定终端点地址")
-    parser.add_argument("--cert", help="指定证书路径")
-    parser.add_argument("--key", help="指定密钥路径")
-    parser.add_argument("--ca_file", help="指定 CA 文件路径")
-    parser.add_argument("--thing_name", help="设备名称")
-    return parser.parse_args()
-
-
 if __name__ == "__main__":
-    args = parse_arguments()
+
     endpoint = args.endpoint
     cert = args.cert
     key = args.key
