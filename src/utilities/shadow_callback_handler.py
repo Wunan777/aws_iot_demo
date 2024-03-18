@@ -1,6 +1,7 @@
 import traceback
 from awsiot import iotshadow
 from concurrent.futures import Future
+import logging
 
 
 def exit(msg_or_exception):
@@ -24,7 +25,7 @@ def on_disconnected(disconnect_future):
 def on_get_shadow_accepted(response):
     # type: (iotshadow.GetShadowResponse) -> None
     try:
-        print("on_get_shadow_accepted : {}".format(response))
+        logging.debug("on_get_shadow_accepted : {}".format(response))
         return
 
     except Exception as e:
@@ -50,7 +51,7 @@ def on_get_shadow_rejected(error):
 def on_shadow_delta_updated(delta):
     # type: (iotshadow.ShadowDeltaUpdatedEvent) -> None
     try:
-        print("Received shadow delta event. :{}".format(delta))
+        logging.debug("Received shadow delta event. :{}".format(delta))
 
     except Exception as e:
         exit(e)
@@ -70,7 +71,7 @@ def on_update_shadow_accepted(response):
     # type: (iotshadow.UpdateShadowResponse) -> None
     try:
         # check that this is a response to a request from this session
-        print("on_update_shadow_accepted: {}".format(response))
+        logging.debug("on_update_shadow_accepted: {}".format(response))
     except Exception as e:
         exit(e)
 

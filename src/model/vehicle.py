@@ -1,9 +1,10 @@
+import os
 import logging
 from uuid import uuid4
 from awsiot import iotshadow, mqtt_connection_builder
 from awscrt import mqtt
-
-
+import time
+from utilities.tool import mock_loading_n_second
 from utilities.view import Render
 
 
@@ -28,24 +29,40 @@ class Vehicle:
         self.location = "0.0,0.0"
 
         self.shadow = None
-        unlocked_car_image = Render.get_vehicle_view_unlocked()
-        logging.info("\n" + unlocked_car_image)
+
+    def print(self, door_status=None):
+        if not door_status:
+            door_status = self.door_status
+        if door_status == "unlocked":
+            unlocked_car_image = Render.get_vehicle_view_unlocked()
+            logging.info("\n" + unlocked_car_image)
+        elif door_status == "locked":
+            locked_car_image = Render.get_vehicle_view_locked()
+            logging.info("\n" + locked_car_image)
+        else:
+            pass
 
     def lock_door(
         self,
     ):
         self.door_status = "locked"
-        locked_car_image = Render.get_vehicle_view_locked()
-        logging.info("\n" + locked_car_image)
+
+        mock_loading_n_second(5, "locking door")
+        os.system("clear")
+
+        self.print(self.door_status)
 
     def unlock_door(self):
         self.door_status = "unlocked"
-        unlocked_car_image = Render.get_vehicle_view_unlocked()
-        logging.info("\n" + unlocked_car_image)
+
+        mock_loading_n_second(5, "unlocking door")
+        os.system("clear")
+
+        self.print(self.door_status)
 
     def manage_door_status(self, desired_door_status):
         if self.door_status == desired_door_status:
-            logging.info(
+            logging.debug(
                 "manage_door_status: vehicle_door_status - {}, is same as desired_door_status, no need to operation.".format(
                     desired_door_status
                 )
@@ -54,6 +71,7 @@ class Vehicle:
         logging.debug(
             "manage_door_status desired_door_status: {}".format(desired_door_status)
         )
+
         if desired_door_status == "locked":
             self.lock_door()
         elif desired_door_status == "unlocked":

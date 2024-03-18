@@ -1,3 +1,4 @@
+import os
 import argparse
 import logging
 from awsiot import iotshadow, mqtt_connection_builder
@@ -5,6 +6,7 @@ from awscrt import mqtt, http
 from uuid import uuid4
 from utilities.tool import get_client_id
 from shadow.index import Shadow
+from utilities.view import Render
 
 logging.basicConfig(encoding="utf-8", level=logging.INFO)
 
@@ -82,13 +84,16 @@ if __name__ == "__main__":
 
     while True:
         # Read user input
-        print("Please input your cmd: `door-lock` or `door-unlock`")
-        cmd = input()
+        os.system("clear")
+        print("Please input 1 or 2")
+        app_screen = Render.get_app_screen()
+        logging.info("\n" + app_screen)
 
-        print("Your input: {}".format(cmd))
-        if cmd == "door-lock":
+        cmd = input()
+        # print("Your input: {}".format(cmd))
+        if cmd == "1":
             shadow_client.change_desired_value(desired={"door-status": "locked"})
-        elif cmd == "door-unlock":
+        elif cmd == "2":
             shadow_client.change_desired_value(desired={"door-status": "unlocked"})
         else:
             print("Invalid input, please try again.")

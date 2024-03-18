@@ -8,3 +8,4 @@ src/__pycache__/callback_handler.cpython-39.pyc
 *.pyc
 *.log
 /temp
+/v1_cert

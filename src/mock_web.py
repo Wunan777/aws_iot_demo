@@ -7,7 +7,7 @@ import logging
 import os
 from utilities.view import Render
 
-logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
+logging.basicConfig(encoding="utf-8", level=logging.INFO)
 
 
 def parse_arguments():

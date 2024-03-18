@@ -1,6 +1,10 @@
 from utilities.tool import pad_string
 
 
+red_circle = "🔴"
+green_circle = "🟢"
+
+
 class Render:
     def __init__(self) -> None:
         pass
@@ -12,7 +16,9 @@ class Render:
             + "                 _.-'/ |      _||  \"--._              \n"
             + "           __.--'`._/_\j_____/_||___\    `----.        \n"
             + "      _.--'_____    |    locked        _____  /        \n"
-            + "    _j    /,---.\   |        =o |   /,---.\   |_       \n"
+            + "    _j    /,---.\   |     {} =o |   /,---.\   |_       \n".format(
+                red_circle
+            )
             + "   [__]==// .-. \\==`===========/==// .-. \\=[__]      \n"
             + "     `-._|\ `-' /|___\_________/___|\ `-' /|_.'        \n"
             + "           `---'                     `---'             \n"
@@ -21,12 +27,15 @@ class Render:
 
     @staticmethod
     def get_vehicle_view_unlocked():
+
         unlocked_car_image = (
             "                     _..-------++._                      \n"
             + "                 _.-'/ |      _||  \"--._              \n"
             + "           __.--'`._/_\j_____/_||___\    `----.        \n"
-            + "      _.--'_____    | unlocked|   _____       /        \n"
-            + "    _j    /,---.\   |         o |   /,---.\   |_       \n"
+            + "      _.--'_____    | unlocked        _____  /        \n"
+            + "    _j    /,---.\   |    {} =o |   /,---.\   |_       \n".format(
+                green_circle
+            )
             + "   [__]==// .-. \\==`===========/==// .-. \\=[__]      \n"
             + "     `-._|\ `-' /|___\_________/___|\ `-' /|_.'        \n"
             + "           `---'                     `---'             \n"
@@ -34,11 +43,48 @@ class Render:
         return unlocked_car_image
 
     @staticmethod
+    def get_app_screen():
+        app_screen = (
+            "         _.-----------._         \n"
+            + "      .-'      __       `-.    \n"
+            + "    .'       .'  `.        `.  \n"
+            + "   ;         :    :          ; \n"
+            + "   |         `.__.'          | \n"
+            + "   |   ___                   | \n"
+            + "   |  (_M_) M O T O R A L A  | \n"
+            + "   | .---------------------. | \n"
+            + "   | |                     | | \n"
+            + "   | |                     | | \n"
+            + "   | |  1 - lock door {}   | | \n".format(red_circle)
+            + "   | |  2 - unlock door {} | | \n".format(green_circle)
+            + "   | |                     | | \n"
+            + "   | |                     | | \n"
+            + "   | |                     | | \n"
+            + "   | `---------------------' | \n"
+            + "   |                         | \n"
+            + "   |                __       | \n"
+            + "   |  ________  .-~~__~~-.   | \n"
+            + "   | |___C___/ /  .'  `.  \  | \n"
+            + "   |  ______  ;   : OK :   ; | \n"
+            + "   | |__A___| |  _`.__.'_  | | \n"
+            + "   |  _______ ; \< |  | >/ ; | \n"
+        )
+        return app_screen
+
+    @staticmethod
     def get_monitor_website_view(vehicle_name, model, door_status):
         header_info = pad_string("Monitor Website.")
+        circle = "-"
+        if door_status == "locked":
+            circle = red_circle
+        elif door_status == "unlocked":
+            circle = green_circle
         vehicle_info = pad_string(
-            "{} {}, {}: {}".format(vehicle_name, model, "door-status", door_status)
+            "{}, {}: {}".format(
+                vehicle_name, "door-status", (door_status + " " + circle)
+            )
         )
+
         webview_image = (
             "                 _________________________________________                                "
             + "\n"

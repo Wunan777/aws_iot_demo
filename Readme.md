@@ -40,3 +40,20 @@ python3 src/mock_app.py --endpoint ${endpoint} --cert ${cert_path} --key ${key_p
 ```
 python3 src/mock_app.py --endpoint ${endpoint} --cert ${cert_path} --key ${key_path} --ca_file ${ca_file_path} --thing_name=${vehicle_id}
 ```
+
+# Demo3: Digital Twin
+In this scenario, device is the vehicle, and we will controll the vehicle with the vehicle controll app. 
+
+Select unlock or lock in the app to controll the vehicle via `aws iot core shadow service`. 
+## Steps:
+- step1: The vechile on online.
+
+```
+python3 src/device.py --endpoint ${endpoint} --cert ${cert_path} --key ${key_path} --ca_file ${ca_file_path} --thing_name=${vehicle_id}
+```
+
+- step2: Mock the door unlocking operation in `vehicle controll app`,
+
+```
+python3 src/mock_app.py --endpoint ${endpoint} --cert ${cert_path} --key ${key_path} --ca_file ${ca_file_path} --thing_name=${vehicle_id}
+```

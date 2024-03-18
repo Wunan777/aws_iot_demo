@@ -67,7 +67,7 @@ if __name__ == "__main__":
     client_id = get_client_id("vehicle")
     shadow_thing_name = args.thing_name
 
-    print(shadow_thing_name)
+    logging.info("Device Name: {}".format(shadow_thing_name))
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
         endpoint=endpoint,
         port=port,
@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     connected_future = mqtt_connection.connect()
     connected_future.result()
-    print("Connected!")
+    logging.info("Connected!")
 
     # Initilize shadow.
     shadow_client = Shadow(
@@ -95,6 +95,7 @@ if __name__ == "__main__":
         on_shadow_delta_updated=on_shadow_delta_updated,
     )
     vehicle.conect_shadow(shadow_client)
+    vehicle.print()
 
     shadow_client.query_remote_shadow()
 
